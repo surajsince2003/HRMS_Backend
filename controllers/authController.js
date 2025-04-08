@@ -26,7 +26,7 @@ const login = async (req,res)=>{
 try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
-    const role = await User.findOne({role})
+
     if (!user) return res.status(400).json({ message: "User not found" });
 
     const isMatch = await bcrypt.compare(password, user.password);
@@ -34,7 +34,12 @@ try {
 
     const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '24h' });
 
-    res.json({ message: "Login successful",role:role, token });
+    res.json({ message: "Login successful", token , user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      }});
 
 
 } catch (error) {
