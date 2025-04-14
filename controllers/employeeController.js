@@ -4,10 +4,10 @@ const Employee = require("../models/Employee");
 const addEmployee = async (req, res) => {
 
     try {
-        const { name, email, position, department, salary } = req.body;
+        const { name, email,number, employeeID,position, department,doj, salary,gender } = req.body;
         let employee = await Employee.findOne({ email });
         if (employee) return res.status(400).json({ message: "Employee already exists" });
-        employee = new Employee({ name, email, position, department, salary });
+        employee = new Employee({  name, email,number, employeeID,position, department,doj, salary,gender });
 
         await employee.save();
 
@@ -40,8 +40,8 @@ const getEmployeeById = async (req, res) => {
 
 const updateEmployee = async (req, res) => {
     try {
-        const { name, email, position, department, salary } = req.body;
-        const employee = await Employee.findByIdAndUpdate(req.params.id, { name, email, position, department, salary }, { new: true });
+        const {  name, email,number,position, department, salary,gender } = req.body;
+        const employee = await Employee.findByIdAndUpdate(req.params.id, {  name, email,number,position, department, salary,gender}, { new: true });
 
         if (!employee) return res.status(404).json({ message: "Employee not found" });
 
